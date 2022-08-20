@@ -14,7 +14,7 @@ class App extends React.Component {
     };
   }
   onSearchText = (val) => {
-    this.setState({ searchText: val });
+    this.setState({ searchText: val.toLowerCase() });
   };
 
   onDeleteItem = (id) => {
@@ -29,16 +29,10 @@ class App extends React.Component {
     // console.log("Archive it", id);
     const idx = this.state.notes.findIndex((note) => note.id === id);
     const newNotes = [...this.state.notes];
-    newNotes[idx].archived = true;
+    newNotes[idx].archived = !newNotes[idx].archived;
     this.setState({
       notes: [...newNotes]
     });
-    // this.setState((prevState) => {
-    //   notes: prevState.notes.map((el) =>
-    //     el.id === id ? { ...el, archived: true } : el
-    //   );
-    // });
-    // console.log(this.state.notes[idx]);
   };
 
   // const deleteNote = (id) => {
@@ -55,7 +49,9 @@ class App extends React.Component {
         <Header handleSearchNote={this.onSearchText} />
         <Body />
         <ListNotes
-          notes={this.state.notes}
+          notes={notes.filter((note) =>
+            note.title.toLowerCase().includes(searchText)
+          )}
           handleDeleteItem={this.onDeleteItem}
           handleArchiveItem={this.onArchiveItem}
         />

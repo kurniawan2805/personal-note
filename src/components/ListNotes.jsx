@@ -5,12 +5,12 @@ function ListNotes({ ...props }) {
   const {
     notes,
     handleDeleteItem,
-    handleArchiveItem,
-    handleActiveItem
+    handleArchiveItem
+    // handleActiveItem
   } = props;
   // console.log(props);
-  const activeNotes = [];
-  const archivedNotes = [];
+  // const activeNotes = [];
+  // const archivedNotes = [];
 
   // notes.map(note => {
 
@@ -42,7 +42,7 @@ function ListNotes({ ...props }) {
                 key={note.id}
                 note={note}
                 handleDeleteItem={handleDeleteItem}
-                handleActiveItem={handleActiveItem}
+                handleArchiveItem={handleArchiveItem}
               />
             );
           }

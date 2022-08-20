@@ -22,7 +22,7 @@ function Note({ ...props }) {
           className="note-item__archive-button"
           onClick={() => handleArchiveItem(note.id)}
         >
-          Arsipkan
+          {!note.archived ? "Arsipkan" : "Pindahkan"}
         </button>
       </div>
     </div>
