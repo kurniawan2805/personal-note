@@ -1,6 +1,5 @@
 import React from "react";
 import Swal from "sweetalert2";
-// import "bootstrap/dist/css/bootstrap.min.css";
 
 import AddNote from "./components/AddNote";
 import Header from "./components/Header";
@@ -87,18 +86,20 @@ class App extends React.Component {
 
   render() {
     const { searchText, notes } = this.state;
-    console.log(notes);
+    // console.log(notes);
     return (
       <div className="App">
         <Header handleSearchNote={this.onSearchText} />
-        <AddNote handleAddNote={this.onAddNote} />
-        <ListNotes
-          notes={notes.filter((note) =>
-            note.title.toLowerCase().includes(searchText)
-          )}
-          handleDeleteItem={this.onDeleteItem}
-          handleArchiveItem={this.onArchiveItem}
-        />
+        <div className="note-app__body">
+          <AddNote handleAddNote={this.onAddNote} />
+          <ListNotes
+            notes={notes.filter((note) =>
+              note.title.toLowerCase().includes(searchText)
+            )}
+            handleDeleteItem={this.onDeleteItem}
+            handleArchiveItem={this.onArchiveItem}
+          />
+        </div>
       </div>
     );
   }

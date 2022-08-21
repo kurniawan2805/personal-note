@@ -6,18 +6,24 @@ function Notes({ ...props }) {
   const { notes, handleDeleteItem, handleArchiveItem } = props;
   // console.log(note);
   return (
-    <div className="notes-list">
-      {notes.map((note) => {
-        return (
-          <Note
-            key={note.id}
-            note={note}
-            handleDeleteItem={handleDeleteItem}
-            handleArchiveItem={handleArchiveItem}
-          />
-        );
-      })}
-    </div>
+    <>
+      {notes.length !== 0 ? (
+        <div className="notes-list">
+          {notes.map((note) => {
+            return (
+              <Note
+                key={note.id}
+                note={note}
+                handleDeleteItem={handleDeleteItem}
+                handleArchiveItem={handleArchiveItem}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <p className="notes-list__empty-message">Tidak ada catatan</p>
+      )}
+    </>
   );
 }
 
