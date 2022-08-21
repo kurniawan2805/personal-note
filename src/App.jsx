@@ -1,8 +1,11 @@
 import React from "react";
-import Body from "./components/Body";
+import Swal from "sweetalert2";
+// import "bootstrap/dist/css/bootstrap.min.css";
+
+import AddNote from "./components/AddNote";
 import Header from "./components/Header";
 import ListNotes from "./components/ListNotes";
-import { getInitialData, showFormattedDate } from "./utils/index";
+import { getInitialData } from "./utils/index";
 
 class App extends React.Component {
   constructor(props) {
@@ -10,6 +13,7 @@ class App extends React.Component {
 
     this.state = {
       notes: getInitialData(),
+      newNote: {},
       searchText: ""
     };
   }
@@ -18,11 +22,42 @@ class App extends React.Component {
   };
 
   onDeleteItem = (id) => {
-    // console.log("Delete it", id);
     const newNotes = this.state.notes.filter((note) => note.id !== id);
-    this.setState({
-      notes: [...newNotes]
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger"
+      },
+      buttonsStyling: false
     });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Apakah Anda yakin?",
+        text: "Catatan tidak bisa dikembalikan!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Ya, hapus!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.setState({
+            notes: [...newNotes]
+          });
+          swalWithBootstrapButtons.fire(
+            "Terhapus!",
+            "Catatan berhasil dihapus.",
+            "success"
+          );
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire("Cancelled", "Dibatalkan!", "error");
+        }
+      });
   };
 
   onArchiveItem = (id) => {
@@ -35,19 +70,28 @@ class App extends React.Component {
     });
   };
 
-  // const deleteNote = (id) => {
-  // 	const newNotes = notes.filter((note) => note.id !== id);
-  // 	setNotes(newNotes);
-  // };
+  onAddNote = ({ title, body }) => {
+    const date = new Date();
+    const newNote = {
+      id: +new Date(),
+      title: title,
+      body: body,
+      createdAt: date,
+      archived: false
+    };
+
+    this.setState((prevState) => ({
+      notes: [...prevState.notes, newNote]
+    }));
+  };
 
   render() {
     const { searchText, notes } = this.state;
-    // console.log(notes);
-    // console.log(showFormattedDate(new Date()));
+    console.log(notes);
     return (
       <div className="App">
         <Header handleSearchNote={this.onSearchText} />
-        <Body />
+        <AddNote handleAddNote={this.onAddNote} />
         <ListNotes
           notes={notes.filter((note) =>
             note.title.toLowerCase().includes(searchText)

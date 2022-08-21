@@ -1,15 +1,16 @@
 import React from "react";
 import Form from "./Form";
 
-function Body() {
+function AddNote({ ...props }) {
+  const { handleAddNote } = props;
   return (
     <div className="note-app__body">
       <div className="note-input">
         <h2>Buat catatan</h2>
-        <Form />
+        <Form handleAddNote={handleAddNote} />
       </div>
     </div>
   );
 }
 
-export default Body;
+export default AddNote;

@@ -1,5 +1,5 @@
 import React from "react";
-import Note from "./Note";
+import Notes from "./Notes";
 
 function ListNotes({ ...props }) {
   const {
@@ -9,45 +9,31 @@ function ListNotes({ ...props }) {
     // handleActiveItem
   } = props;
   // console.log(props);
-  // const activeNotes = [];
-  // const archivedNotes = [];
-
-  // notes.map(note => {
-
-  // })
+  let activeNotes = [];
+  let archivedNotes = [];
+  notes.map((note) => {
+    if (note.archived) {
+      archivedNotes = [...archivedNotes, note];
+    } else {
+      activeNotes = [...activeNotes, note];
+    }
+    return { activeNotes, archivedNotes };
+  });
 
   return (
     <>
-      <h2>Aktif</h2>
-      <div className="notes-list">
-        {notes.map((note) => {
-          if (!note.archived) {
-            return (
-              <Note
-                key={note.id}
-                note={note}
-                handleDeleteItem={handleDeleteItem}
-                handleArchiveItem={handleArchiveItem}
-              />
-            );
-          }
-        })}
-      </div>
+      <h2>Catatan Aktif</h2>
+      <Notes
+        notes={activeNotes}
+        handleDeleteItem={handleDeleteItem}
+        handleArchiveItem={handleArchiveItem}
+      />
       <h2>Arsip</h2>
-      <div className="notes-list">
-        {notes.map((note) => {
-          if (note.archived) {
-            return (
-              <Note
-                key={note.id}
-                note={note}
-                handleDeleteItem={handleDeleteItem}
-                handleArchiveItem={handleArchiveItem}
-              />
-            );
-          }
-        })}
-      </div>
+      <Notes
+        notes={archivedNotes}
+        handleDeleteItem={handleDeleteItem}
+        handleArchiveItem={handleArchiveItem}
+      />
     </>
   );
 }
